@@ -95,5 +95,64 @@ class AuthController extends Controller
     public function me(Request $request){
     return $request->user();
     }
+
+    public function edit(Request $request){
+        $validData = $request->validate([
+            'firstname' => 'required|string|max:255',
+            'middlename' => 'required|string|max:255',
+            'lastname'  => 'required|string|max:255',
+            'dob' => 'date_format:Y-m-d|before:today|nullable',
+            'street_address' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
+            'country' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:255',
+            'gender' => 'required|string|max:255',
+            'job_title' => 'required|string|max:255',
+            'department' => 'required|string|max:255',
+        ]);
+        
+        //Find User ID in DB
+        $id = $request->user()->id;
+        $user = User::find($id);
+
+        if($user){
+            $user->firstname = $validData['firstname'];
+            $user->middlename = $validData['middlename'];
+            $user->lastname  = $validData['lastname'];
+            $user->dob = $validData['dob'];
+            $user->street_address = $validData['street_address'];
+            $user->city = $validData['city'];
+            $user->state = $validData['state'];
+            $user->country = $validData['country'];
+            $user->phone_number = $validData['phone_number'];
+            $user->gender = $validData['gender'];
+            $user->job_title = $validData['job_title'];
+            $user->department = $validData['department'];
+
+            $saved = $user->save();
+
+            if($saved) {
+                $user = User::find($id);
+
+                $response = array(
+                    "status" => "success",
+                    "message" => "Profile Updated Successfully",
+                    "user" => $user
+                );
+
+                return response()->json($response, 200);
+            }
+        }
+
+        //User isnt found
+         $jsonRes = array(
+            "status" => "failed",
+            "message" => "User Not Found",
+            "user" => []
+        );
+        return response()->json($jsonRes, 404);
+
+    }
     
 }

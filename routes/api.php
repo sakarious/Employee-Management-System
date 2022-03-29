@@ -28,6 +28,7 @@ Route::group(['prefix' => 'v1'], function(){
         Route::get('/profile', [AuthController::class, 'me']);
         Route::get('/getwallet', [WalletController::class, 'getWallet']);
         Route::get('/gethistory', [WalletController::class, 'transfer_history']);
+        Route::put('/editprofile', [AuthController::class, 'edit']);
     });
 
     Route::post('/login', [AuthController::class, 'login']);

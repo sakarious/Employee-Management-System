@@ -63,7 +63,8 @@ The api can be accessed at [http://localhost:8000/api/v1](http://localhost:8000/
 
 -   Register.
 -   Login
--   Profile.
+-   Profile
+-   Edit Profile
 -   Get Wallet
 -   Transfer
 -   Get Transfer History
@@ -72,6 +73,7 @@ The api can be accessed at [http://localhost:8000/api/v1](http://localhost:8000/
 
 -   GET
 -   POST
+- PUT
 
 ## Base URL
 
@@ -83,6 +85,7 @@ The api can be accessed at [http://localhost:8000/api/v1](http://localhost:8000/
 -   `POST: /register` - Admin can register/ create an account for an employee. Default Password is created user last name in lowercase
 -   `POST: /login` - Login and get an access token for authorization.
 -   `GET: /profile` - Authenticated user can see profile.
+-   `PUT: /editprofile` - Authenticated user can edit profile.
 -   `GET: /getwallet` - Authenticated users can see wallet details/balance.
 -   `POST: /transfer` - Admin can transfer funds/ pay salary to employee(s).
 -   `GET: /gethistory?status=failed` - Admin can search payment history by payment status.
@@ -294,6 +297,108 @@ Where Response Object is Users Details.
 | Error code                | Description                                     |
 | ------------------------- | ----------------------------------------------- |
 | 401 Unauthorized           | Unauthenticated.- Check token or Login. |
+| 500 Internal Server Error | Server Error                                    |
+---
+
+### Edit Profile
+
+---
+
+Authenticated User can edit profile
+
+
+-   **URL and Method**
+    `PUT http://127.0.0.1:8000/api/v1/editprofile`
+
+  **Required:**
+
+`Authorization: Bearer ACCESS_TOKEN` 
+
+-   **Request**
+
+```
+PUT http://localhost:8000/api/v1/register
+Accept: application/json
+
+{
+    "firstname": "Saka",
+    "middlename": "Doe",
+    "lastname": "Rious",
+    "dob": "1960-07-01",
+    "street_address": "Street Address",
+    "city": "Ikeja",
+    "state": "Lagos",
+    "country": "Nigeria",
+    "phone_number": "+23410203040",
+    "gender": "male",
+    "job_title": "Software Engineer",
+    "department": "Innovation and Software Development"
+}
+```
+
+With the following fields:
+
+| Parameter       | Required? | Description              |
+| --------------- | --------- | ------------------------ |
+| firstname            | required  | User's First name.            |
+| middlename            | required  | User's Middle name.            |
+| lastname            | required  | User's Last name.            |
+| dob            | required  | User's Date of Birth (In Year-month-day).            |
+| email           | required  | User's email             |
+| street_address        | required  | User's Street Address          |
+| city        | required  | User's City.        |
+| state        | required  | User's State.         |
+| country        | required  | User's Country.         |
+| phone_number        | required  | User's Phone Number         |
+| gender        | required  | User's Gender.         |
+| job_title        | required  | User's Job Title.         |
+| department        | required  | User's Department.         |
+
+
+-   **Success Response**
+
+```
+Status 200 Success
+Content-Type: application/json; charset=utf-8
+
+{
+  "status": "success",
+  "message": "Profile Updated Successfully",
+  "user": {
+    "id": 2,
+    "firstname": "Saka",
+    "middlename": "Doe",
+    "lastname": "Rious",
+    "dob": "1960-07-01",
+    "email": "ajayi@gmail.com",
+    "street_address": "Street Address",
+    "city": "Ikeja",
+    "state": "Lagos",
+    "country": "Nigeria",
+    "phone_number": "+23410203040",
+    "gender": "male",
+    "job_title": "Software Engineer",
+    "department": "Innovation and Software Development"
+  }
+}
+```
+
+Where Response Object is:
+
+| Field           | Type     | Description                              |
+| --------------- | -------- | ---------------------------------------- |
+| message    | string | Response Message.                  |                    |
+| status            | string   | Status of response |
+| user           | object   | Details of newly updated profile|
+
+
+
+-   **Possible errors**
+
+| Error code                | Description                                     |
+| ------------------------- | ----------------------------------------------- |
+| 400 Bad Request           | Required fields were invalid, validation failed |
+| 403 Forbidden          | Access Denied - This means Unauthorized user. Route is only accessible to administrator. |
 | 500 Internal Server Error | Server Error                                    |
 ---
 
