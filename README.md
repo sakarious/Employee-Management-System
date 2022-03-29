@@ -77,7 +77,7 @@ The api can be accessed at [http://localhost:8000/api/v1](http://localhost:8000/
 
 ## Base URL
 
-`http://localhost:8000/api`
+`http://localhost:8000/api/v1`
 **Set 'Accept' to 'application/json' in http header for all requests**
 
 ## Endpoints
